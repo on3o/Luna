@@ -11,7 +11,7 @@
 import numpy as np
 from collections import Counter
 from math import sqrt
-from metrics import accuracy_score
+from .metrics import accuracy_score
 
 
 class KNeighborsClassifier:
