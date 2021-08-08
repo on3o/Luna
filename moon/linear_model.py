@@ -81,6 +81,49 @@ class MultipleLinearRegression:
         self.coef_ = self._theta[1:]
         return self
 
+    def fit_gradient_descent(self, X_train, y_train, eta=0.01, n_iters=1e4):
+        """
+        根据训练模型X_train，y_train，使用梯度下降法训练Linear Regression模型
+        :param X_train: 训练模型矩阵
+        :param y_train: 训练结果向量
+        :param eta: 学习率
+        :param n_iters: 最大学习次数
+        :return:
+        """
+        assert X_train.shape[0] == y_train.shape[0], "训练结果向量的数量必须等于训练特征集的数量"
+
+        def J(theta, X_b, y):
+            try:
+                return np.sum((y - X_b.dot(theta)) ** 2) / len(X_b)
+            except:
+                return float("inf")
+
+        def dJ(theta, X_b, y):
+            result = np.empty(len(theta))
+            result[0] = np.sum(X_b.dot(theta) - y)
+            for i in range(1, len(theta)):
+                result[i] = (X_b.dot(theta) - y).dot(X_b[:, i])
+            return result * 2 / len(X_b)
+
+        def gradient_descent(X_b, y, initial_theta, eta, n_iter=1e4, epsilon=1e-8):
+            theta = initial_theta
+            cur_iter = 0
+            while cur_iter < n_iter:
+                gradient = dJ(theta, X_b, y)
+                last_theta = theta
+                theta = theta - eta * gradient
+                if abs(J(last_theta, X_b, y) - J(theta, X_b, y)) < epsilon:
+                    break
+                cur_iter += 1
+            return theta
+
+        X_b = self.get_X_b(X_train)
+        initial_theta = np.zeros(X_b.shape[1])
+        self._theta = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)
+        self.intercept_ = self._theta[0]
+        self.coef_ = self._theta[1:]
+        return self
+
     def predict(self, X_test):
         """
         对X_test进行预测
