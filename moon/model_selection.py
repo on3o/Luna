@@ -13,6 +13,14 @@ import numpy as np
 
 
 def train_test_split(X_raw, y_raw, test_ratio=.2, seed=None):
+    """
+    切分训练集和测试集
+    :param X_raw: 原始特征向量
+    :param y_raw: 原始结果
+    :param test_ratio: 测试数据集比例
+    :param seed: 随机数种子
+    :return: X_train, X_test, y_train, y_test
+    """
     assert X_raw.shape[0] == y_raw.shape[0], "传入的数据样本特征数量必须与目标数量一致"
     assert 0.0 <= test_ratio < 1.0, "测试数据的比例必须是有效值"
     if seed:

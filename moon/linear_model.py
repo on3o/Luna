@@ -99,11 +99,12 @@ class MultipleLinearRegression:
                 return float("inf")
 
         def dJ(theta, X_b, y):
-            result = np.empty(len(theta))
-            result[0] = np.sum(X_b.dot(theta) - y)
-            for i in range(1, len(theta)):
-                result[i] = (X_b.dot(theta) - y).dot(X_b[:, i])
-            return result * 2 / len(X_b)
+            # result = np.empty(len(theta))
+            # result[0] = np.sum(X_b.dot(theta) - y)
+            # for i in range(1, len(theta)):
+            #     result[i] = (X_b.dot(theta) - y).dot(X_b[:, i])
+            # return result * 2 / len(X_b)
+            return X_b.T.dot(X_b.dot(theta) - y) * 2 / len(X_b)
 
         def gradient_descent(X_b, y, initial_theta, eta, n_iter=1e4, epsilon=1e-8):
             theta = initial_theta
